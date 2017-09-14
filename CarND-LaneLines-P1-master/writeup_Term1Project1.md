@@ -33,6 +33,20 @@ My pipeline consisted of the following steps:
 
 6) Overlay on original image and obtain output
 
+The draw_lines function modification was one of the tricker parts since it would throw a lot of different errors based on the parameters used by Canny Edge and Hough transform functions. 
+
+The final draw_lines function is as follows: 
+
+1) First, we get the slope and intercept for each of the smaller lines given by Hough transform. This is required to seperate and identify which of the smaller segments belong to the main left and right lines.
+
+2) If there are multiple line instances present and some of them don't belong to either of the core lines, there is a need to remove them. For this reason, we compare the slope and intercepts of each of the smaller segments with the maximum and minimum slopes to classify them as belonging to left or right lines, or neither. 
+
+3) This gives us 2 lists of (x1, y1, x2, y2)s - each belonging to main left and right line. We then average the position of each of the lines and then extrapolate them to reach the bottom of the image, while the top is defined by the trapezoidal region of interest that was selected during obtaining Hough lines. 
+
+Here, we ran into errors with certain combinations of canny edge and hough transform parameters that would throw 'divide by zero' and 'can't convert infinity to integer' errors. To solve this, we first ensure that we have enough content in the left and right slope arrays before making any calculations - and hence the IF loops. 
+
+4) Eventually, we get 2 combinations of (x1, y1, x2, y2) that define the left & right lines respectively that can be overlayed. 
+
 ### 2. Identify potential shortcomings with your current pipeline
 
 1) Straight line fittings don't work accurately when we have curved roads
