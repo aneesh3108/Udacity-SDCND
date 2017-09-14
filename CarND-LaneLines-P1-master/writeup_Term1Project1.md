@@ -12,11 +12,6 @@ The goals / steps of this project are the following:
 * Make a pipeline that finds lane lines on the road
 * Reflect on your work in a written report
 
-
-[//]: # (Image References)
-
-[image1]: ./examples/grayscale.jpg "Grayscale"
-
 ---
 
 ### Reflection
@@ -37,8 +32,6 @@ My pipeline consisted of the following steps:
 5) Obtain Hough lines and extrapolate multiple combinations of (x1, y1, x2, y2)s to just 2 of (x1, y1, x2, y2) - for lines at either sides
 
 6) Overlay on original image and obtain output
-![alt text][image1]
-
 
 ### 2. Identify potential shortcomings with your current pipeline
 
