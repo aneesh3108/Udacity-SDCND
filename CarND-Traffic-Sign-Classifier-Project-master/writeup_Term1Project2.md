@@ -19,12 +19,12 @@ The goals / steps of this project are the following:
 
 [//]: # (Image References)
 
-[image1]: ./test_examples/dataset.png "dataset distribution" =100x20
-[image4]: ./test_examples/1.jpg "Traffic Sign 1" 
-[image5]: ./test_examples/2.jpg "Traffic Sign 2"
-[image6]: ./test_examples/3.jpg "Traffic Sign 3"
-[image7]: ./test_examples/4.jpg "Traffic Sign 4"
-[image8]: ./test_examples/5.jpg "Traffic Sign 5"
+<img src="./test_examples/dataset.png" alt="dataset distribution" style="width: 20"/>
+<img src="./test_examples/1.jpg" alt="Traffic Sign 1" style="width: 20"/>
+<img src="./test_examples/2.jpg" alt="Traffic Sign 2" style="width: 20"/>
+<img src="./test_examples/3.jpg" alt="Traffic Sign 3" style="width: 20"/>
+<img src="./test_examples/4.jpg" alt="Traffic Sign 4" style="width: 20"/>
+<img src="./test_examples/5.jpg" alt="Traffic Sign 5" style="width: 20"/>
 
 ## Rubric Points
 ###Here I will consider the [rubric points](https://review.udacity.com/#!/rubrics/481/view) individually and describe how I addressed each point in my implementation.  
