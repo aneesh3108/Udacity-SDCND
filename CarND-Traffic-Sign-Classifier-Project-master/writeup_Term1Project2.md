@@ -19,7 +19,7 @@ The goals / steps of this project are the following:
 
 [//]: # (Image References)
 
-[image1]: ./images/dataset.png "dataset distribution"
+[image1]: ./test_examples/dataset.png "dataset distribution"
 [image4]: ./test_examples/1.jpg "Traffic Sign 1"
 [image5]: ./test_examples/2.jpg "Traffic Sign 2"
 [image6]: ./test_examples/3.jpg "Traffic Sign 3"
