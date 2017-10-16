@@ -113,7 +113,4 @@ The code for finding softmax probabilities on my final model is located in the 2
 
 For all images, the model is perfectly sure its classifying the image perfectly. 
 
-### (Optional) Visualizing the Neural Network (See Step 4 of the Ipython notebook for more details)
-####1. Discuss the visual output of your trained network's feature maps. What characteristics did the neural network use to make classifications?
-
 
