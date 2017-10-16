@@ -19,7 +19,7 @@ The goals / steps of this project are the following:
 
 [//]: # (Image References)
 
-[image1]: ./test_examples/dataset.png "dataset distribution"
+[image1]: ./test_examples/dataset.png "dataset distribution" =100x20
 [image4]: ./test_examples/1.jpg "Traffic Sign 1" 
 [image5]: ./test_examples/2.jpg "Traffic Sign 2"
 [image6]: ./test_examples/3.jpg "Traffic Sign 3"
@@ -87,8 +87,25 @@ My final model consisted of the following layers:
 ####3. Describe how you trained your model. The discussion can include the type of optimizer, the batch size, number of epochs and any hyperparameters such as learning rate.
 
 To train the model, I used standard cross-entropy loss and Adam Optimizer with a learning rate of 0.0009
+Obtaining the learnign rate took quite a debugging since standard conventional learning rates from 0.1 to 0.0001 weren't really working well. I then set a small for loop for 10 epochs each to vary the lr from [0.001 to 0.00001] in units of 0.001 till finally obtaining and concluding on 0.0009. 
+The final number of epochs was kept to 50 as anything above 50 didn't really improve the performance and it seemed a steady number during multiple tries. A batch size of 100 was used. I figured having batch size > 50 would be essential since that would, on an ensemble level, ensure that the network sees enough variations amongst 43 classes of images. A few tweaking from 50 in additions of 10 led to a batch size of 100 before my GPU started throwing memory allocation errors. 
+To summarize, the following parameters were used: 
+Lr            = 0.0009
+Loss          = Cross-entropy
+Batch size    = 100
+Final epochs  = 50
 
 ####4. Describe the approach taken for finding a solution and getting the validation set accuracy to be at least 0.93. Include in the discussion the results on the training, validation and test sets and where in the code these were calculated. Your approach may have been an iterative process, in which case, outline the steps you took to get to the final solution and why you chose those steps. Perhaps your solution involved an already well known implementation or architecture. In this case, discuss why you think the architecture is suitable for the current problem.
+
+As per the guidelines, I started off with using the basic LeNet architechture. It was good, and with a few tweakings, gave an accuracy good enough to pass the validation set standard required - however, a small visualization of softmax probabilities showed that the network wasn't really confident when it came to dealing images with speed limits and the ones displayed in my report i.e. the softmax probabilities were varying and the network wasn't fully confident of its score.
+
+To fix that, I initially thought of using ResNet level architechtures but a quick realization led to the fact that the chances of having a model with that many parameters would require high memory level in SDC and hence, tried to keep the parameters limited. As a result, I increased the number of filters learnt and added an extra convolution layer that acted more as a global average pooling layer. I then used the result from the max-pooled conv 2 layer with the global average layer's output as inputs to the FC layer 1. 
+
+I experimented with using outputs from pre-max pool conv 2 and conv 1 layers as well, but since the architecture isn't really that deep, there isn't much of a difference in features learnt and hence, to avoid increasing the input params to the first fully connected layer, I limited it to just the two inputs used. 
+
+I refrained from using dropout/ batch norm here since I didn't feel the need to use them due to a "relatively less deep" network that I used. 
+
+Overall, I figured going directly from 1600 features to 43 would be one big task and hence gradually learnt a descent that went from 1600 -> 500 -> 100 -> 43. This, instead of direct 1600 -> 43, kicked up the accuracies in validation and testing by roughly 2.4 % - which is considerably huge since we already crossed the 93 % mark. 
 
 My final model results were:
 * training set accuracy of 100%
