@@ -61,7 +61,7 @@ Here is an exploratory visualization of the data set. It is a bar chart showing 
 
 As a first step, I decided to convert the images to grayscale because given the images in the dataset, color information was not really a necessity and that would in turn save the number of parameters required. 
 
-As a last step, I normalized the image data to have values between ([-1, 1]) as input to the CNN network by calculating the overall mean and standard deviation and subtracting, dividing them througout.
+As a second step, I normalized the image data to have values between ([-1, 1]) as input to the CNN network by calculating the overall mean and standard deviation and subtracting, dividing them througout.
 
 ####2. Describe what your final model architecture looks like including model type, layers, layer sizes, connectivity, etc.) Consider including a diagram and/or table describing the final model.
 
@@ -69,16 +69,21 @@ My final model consisted of the following layers:
 
 | Layer         		|     Description	        					| 
 |:---------------------:|:---------------------------------------------:| 
-| Input         		| 32x32x3 RGB image   							| 
-| Convolution 3x3     	| 1x1 stride, same padding, outputs 32x32x64 	|
+| Input         		| 32x32x1 Grayscale image   							| 
+| Convolution 5 x 5     	| 1x1 stride, valid padding, outputs 28x28x32 	|
 | RELU					|												|
-| Max pooling	      	| 2x2 stride,  outputs 16x16x64 				|
-| Convolution 3x3	    | etc.      									|
-| Fully connected		| etc.        									|
+| Max pooling	      	| 2x2 stride,  outputs 14x14x32 				|
+| Convolution 5 x 5	    | 1x1 stride, valid padding, outputs 10x10x32      									|
+| RELU					|												|
+| Max pooling	      	| 2x2 stride,  outputs 5x5x32 				|
+| Convolution 5 x 5	    | 1x1 stride, valid padding, outputs 1x1x800      									|
+| RELU					|												|
+| Fully connected		| Takes flattened outputs from Conv 2 post max pooling & Conv 3 - total size 1600						|
+| Fully connected		| 1600 --> 500						|
+| Fully connected		| 500 --> 100						|
+| Fully connected		| 100 --> 43						|
 | Softmax				| etc.        									|
-|						|												|
-|						|												|
- 
+
 
 
 ####3. Describe how you trained your model. The discussion can include the type of optimizer, the batch size, number of epochs and any hyperparameters such as learning rate.
