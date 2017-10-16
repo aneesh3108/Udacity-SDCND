@@ -16,16 +16,6 @@ The goals / steps of this project are the following:
 * Analyze the softmax probabilities of the new images
 * Summarize the results with a written report
 
-
-[//]: # (Image References)
-
-<img src="./test_examples/dataset.png" alt="dataset distribution" style="width: 20"/>
-<img src="./test_examples/1.jpg" alt="Traffic Sign 1" style="width: 20"/>
-<img src="./test_examples/2.jpg" alt="Traffic Sign 2" style="width: 20"/>
-<img src="./test_examples/3.jpg" alt="Traffic Sign 3" style="width: 20"/>
-<img src="./test_examples/4.jpg" alt="Traffic Sign 4" style="width: 20"/>
-<img src="./test_examples/5.jpg" alt="Traffic Sign 5" style="width: 20"/>
-
 ## Rubric Points
 ###Here I will consider the [rubric points](https://review.udacity.com/#!/rubrics/481/view) individually and describe how I addressed each point in my implementation.  
 
@@ -53,7 +43,7 @@ signs data set:
 
 Here is an exploratory visualization of the data set. It is a bar chart showing how the unbalanced data distribution in the German Traffic Signs Dataset.
 
-![Image distribution in German Traffic Sign Dataset][image1]
+<img src="./test_examples/dataset.png" alt="dataset distribution" style="width: 20"/>
 
 ###Design and Test a Model Architecture
 
@@ -117,8 +107,18 @@ My final model results were:
 
 Here are five German traffic signs that I found on the web:
 
-![alt text][image4] ![alt text][image5] ![alt text][image6] 
-![alt text][image7] ![alt text][image8]
+<img src="./test_examples/1.jpg" alt="Traffic Sign 1" width = "40">
+<img src="./test_examples/2.jpg" alt="Traffic Sign 2" width = "40">
+<img src="./test_examples/3.jpg" alt="Traffic Sign 3" width = "40">
+<img src="./test_examples/4.jpg" alt="Traffic Sign 4" width = "40">
+<img src="./test_examples/5.jpg" alt="Traffic Sign 5" width = "40">
+
+What's new about these images? 
+Well, the first 2 images - I took them off Shutterstock and they come with the watermark. I was curious about if it would cause a problem in classfying (act as noise)
+
+Image 3 - It's just very blurred, then again - the whole dataset is 32 x 32. No surprises there. 
+
+Image 4 & 5 - I took them off Google search and modified them - the stop sign has a small overlap of white stripes that is fairly visible in the image while the other sign has gaussian noise added to it. I was curious as to how the network will react to such "adversaries" 
 
 ####2. Discuss the model's predictions on these new traffic signs and compare the results to predicting on the test set. At a minimum, discuss what the predictions were, the accuracy on these new predictions, and compare the accuracy to the accuracy on the test set 
 
