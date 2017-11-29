@@ -29,14 +29,17 @@ Training data was chosen to keep the vehicle driving on the road. A lot of colle
 For increasing the total number of samples, a set of images collected on the simulator by driving the car in the opposite direction were added to the dataset thus bringing the total image count in the final dataset to 13000 + for the model to be trained on. The Nvidia model takes an input of 66 x 200 as input and instead of taking the whole image and resizing, the images were cropped to have relevant information for the model - that is, the car's hood was removed from the picture and so was the unrequired natural scenary as shown in the figure. 
 
 The original image from the simulator:
+
 <img src="./images/sample1.jpg" alt="Original image" style="width: 60"/>
 
 The cropped image before resizing and feeding to the model:
+
 <img src="./images/sample1_trim.jpg" alt="Cropped image" style="width: 60"/>
 
 A careful analysis of the data showed that there were a lot of biased samples towards certain set of angles (basically '0'). To make the data distribution even, a lot of repeated samples were removed thus resulting in the number of samples from 24,000 + to 8000 +, but with much better overall distribution to make the model less biased. To account for the variability in the data, the dataset images were randomly flipped and sterring angle inverted. Moreover, random brightness and gamma corrections were applied to the images for more data augmentation. 
 
 The cropped image randomly modified with respect to brightness adjustment:
+
 <img src="./images/sample1_trim_bright.jpg" alt="Brightness" style="width: 60"/>
 
 The model was trained for 8 Epochs with Adam optimizer learning rate of 0.0001 as it seems to work the best (model.py line 77). A varying batch size of 70 - 150 was experimented with and finally a batch size of 100 was determined best. The overall model was trained with MSE loss as compared to all others losses and the final output can be seen in the video (gif here): 
