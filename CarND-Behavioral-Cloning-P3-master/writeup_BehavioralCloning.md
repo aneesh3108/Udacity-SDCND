@@ -1,129 +1,52 @@
-# **Behavioral Cloning** 
-
-## Writeup Template
-
-### You can use this file as a template for your writeup if you want to submit it as a markdown file, but feel free to use some other method and submit a pdf if you prefer.
-
----
-
 **Behavioral Cloning Project**
-
-The goals / steps of this project are the following:
-* Use the simulator to collect data of good driving behavior
-* Build, a convolution neural network in Keras that predicts steering angles from images
-* Train and validate the model with a training and validation set
-* Test that the model successfully drives around track one without leaving the road
-* Summarize the results with a written report
-
-
-[//]: # (Image References)
-
-[image1]: ./examples/placeholder.png "Model Visualization"
-[image2]: ./examples/placeholder.png "Grayscaling"
-[image3]: ./examples/placeholder_small.png "Recovery Image"
-[image4]: ./examples/placeholder_small.png "Recovery Image"
-[image5]: ./examples/placeholder_small.png "Recovery Image"
-[image6]: ./examples/placeholder_small.png "Normal Image"
-[image7]: ./examples/placeholder_small.png "Flipped Image"
-
-## Rubric Points
-### Here I will consider the [rubric points](https://review.udacity.com/#!/rubrics/432/view) individually and describe how I addressed each point in my implementation.  
-
----
-### Files Submitted & Code Quality
 
 #### 1. Submission includes all required files and can be used to run the simulator in autonomous mode
 
 My project includes the following files:
 * model.py containing the script to create and train the model
-* drive.py for driving the car in autonomous mode
-* model.h5 containing a trained convolution neural network 
-* writeup_report.md or writeup_report.pdf summarizing the results
+* drive.py for driving the car in autonomous mode (as provided by Udacity and modified to suit the model's input size)
+* model.h5 containing a trained convolution neural network in Keras 
+* video.mp4 containing a one lap video of the car driving on the path 
+* writeup_report.md or writeup_report.pdf summarizing the workflow and the results
 
 #### 2. Submission includes functional code
 Using the Udacity provided simulator and my drive.py file, the car can be driven autonomously around the track by executing 
 ```sh
-python drive.py model.h5
+source activate carnd-term1
+cd (change to directory)
+python drive.py model.json
 ```
-
 #### 3. Submission code is usable and readable
 
-The model.py file contains the code for training and saving the convolution neural network. The file shows the pipeline I used for training and validating the model, and it contains comments to explain how the code works.
+The model.py file contains the code for training and saving the convolution neural network. The file shows the model I used - Nvidia End to End Deep Learning for Self Driving Cars (https://arxiv.org/pdf/1604.07316v1.pdf), with the slight addition of 'Dropout' layers to reduce overfitting as compared to using training and validation sets. 
 
 ### Model Architecture and Training Strategy
 
-#### 1. An appropriate model architecture has been employed
+I used the popular Nvidia SDC model. It has 3 successive '5 x 5' filter layers, followed by 2 '3 x 3' filter layers before flattening and determining a single value to predict the steering angle. The convolution layers have an additional dropout layer post the max pooling to reduce overfitting. The loss function used for regression was "Mean Squared Error (MSE)", other loss functions were tried - but MSE turned out to be the most effective, not necessarily the most useful though for the task. The model also contains dropout layers in order to reduce overfitting (model.py lines 36, 41, 46, 51 and 56). 
 
-My model consists of a convolution neural network with 3x3 filter sizes and depths between 32 and 128 (model.py lines 18-24) 
+Training data was chosen to keep the vehicle driving on the road. A lot of collects were performed: over 3 hours of different instances of data from the simulator on both roads, however they weren't perfect in the sense that the angles were always a little off the desired values for behavioral learning thus resulting in the car swirling left and right even when it could just stay in a particular position moving forward. In the end, data provided by Udacity was used that contained 24,000 + samples, 8000 + for each of the three cameras: left, center and right. This carefully obtained data had more accurate measures and the resulting model worked more efficiently. 
 
-The model includes RELU layers to introduce nonlinearity (code line 20), and the data is normalized in the model using a Keras lambda layer (code line 18). 
+For increasing the total number of samples, a set of images collected on the simulator by driving the car in the opposite direction were added to the dataset thus bringing the total image count in the final dataset to 13000 + for the model to be trained on. The Nvidia model takes an input of 66 x 200 as input and instead of taking the whole image and resizing, the images were cropped to have relevant information for the model - that is, the car's hood was removed from the picture and so was the unrequired natural scenary as shown in the figure. 
 
-#### 2. Attempts to reduce overfitting in the model
+The original image from the simulator:
 
-The model contains dropout layers in order to reduce overfitting (model.py lines 21). 
+<img src="./images/sample1.jpg" alt="Original image" style="width: 60"/>
 
-The model was trained and validated on different data sets to ensure that the model was not overfitting (code line 10-16). The model was tested by running it through the simulator and ensuring that the vehicle could stay on the track.
+The cropped image before resizing and feeding to the model:
 
-#### 3. Model parameter tuning
+<img src="./images/sample1_trim.jpg" alt="Cropped image" style="width: 60"/>
 
-The model used an adam optimizer, so the learning rate was not tuned manually (model.py line 25).
+A careful analysis of the data showed that there were a lot of biased samples towards certain set of angles (basically '0'). To make the data distribution even, a lot of repeated samples were removed thus resulting in the number of samples from 24,000 + to 8000 +, but with much better overall distribution to make the model less biased. To account for the variability in the data, the dataset images were randomly flipped and sterring angle inverted. Moreover, random brightness and gamma corrections were applied to the images for more data augmentation. 
 
-#### 4. Appropriate training data
+The cropped image randomly modified with respect to brightness adjustment:
 
-Training data was chosen to keep the vehicle driving on the road. I used a combination of center lane driving, recovering from the left and right sides of the road ... 
+<img src="./images/sample1_trim_bright.jpg" alt="Brightness" style="width: 60"/>
 
-For details about how I created the training data, see the next section. 
+The model was trained for 8 Epochs with Adam optimizer learning rate of 0.0001 as it seems to work the best (model.py line 77). A varying batch size of 70 - 150 was experimented with and finally a batch size of 100 was determined best. The overall model was trained with MSE loss as compared to all others losses and the final output can be seen in the video (gif here): 
 
-### Model Architecture and Training Strategy
+<img src="./images/video.gif" alt="Short snippet showing car on the road" style="width: 60"/>
 
-#### 1. Solution Design Approach
-
-The overall strategy for deriving a model architecture was to ...
-
-My first step was to use a convolution neural network model similar to the ... I thought this model might be appropriate because ...
-
-In order to gauge how well the model was working, I split my image and steering angle data into a training and validation set. I found that my first model had a low mean squared error on the training set but a high mean squared error on the validation set. This implied that the model was overfitting. 
-
-To combat the overfitting, I modified the model so that ...
-
-Then I ... 
-
-The final step was to run the simulator to see how well the car was driving around track one. There were a few spots where the vehicle fell off the track... to improve the driving behavior in these cases, I ....
-
-At the end of the process, the vehicle is able to drive autonomously around the track without leaving the road.
-
-#### 2. Final Model Architecture
-
-The final model architecture (model.py lines 18-24) consisted of a convolution neural network with the following layers and layer sizes ...
-
-Here is a visualization of the architecture (note: visualizing the architecture is optional according to the project rubric)
-
-![alt text][image1]
-
-#### 3. Creation of the Training Set & Training Process
-
-To capture good driving behavior, I first recorded two laps on track one using center lane driving. Here is an example image of center lane driving:
-
-![alt text][image2]
-
-I then recorded the vehicle recovering from the left side and right sides of the road back to center so that the vehicle would learn to .... These images show what a recovery looks like starting from ... :
-
-![alt text][image3]
-![alt text][image4]
-![alt text][image5]
-
-Then I repeated this process on track two in order to get more data points.
-
-To augment the data sat, I also flipped images and angles thinking that this would ... For example, here is an image that has then been flipped:
-
-![alt text][image6]
-![alt text][image7]
-
-Etc ....
-
-After the collection process, I had X number of data points. I then preprocessed this data by ...
+I also tried using an LSTM to account for temporal dependency in the task under consideration, however observed it was much easier to augment data with respect to static models as compared to temporal models and decided to stick with the basic Nvidia model. 
 
 
-I finally randomly shuffled the data set and put Y% of the data into a validation set. 
 
-I used this training data for training the model. The validation set helped determine if the model was over or under fitting. The ideal number of epochs was Z as evidenced by ... I used an adam optimizer so that manually training the learning rate wasn't necessary.
