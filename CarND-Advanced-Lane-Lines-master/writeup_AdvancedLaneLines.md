@@ -8,8 +8,7 @@ You're on the page right now.
 
 The writeup can be found in the iPython notebook [here](./Walkthrough.ipynb)
 
-Here's a [link] to my video result(./project_video_output.mp4)
-
+Here's a [link](./project_video_output.mp4) to my video result
 ---
 
 ### Discussion
